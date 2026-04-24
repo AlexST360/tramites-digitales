@@ -26,6 +26,24 @@ Imagina una municipalidad donde los ciudadanos hacen solicitudes en papel y los 
 
 ---
 
+## 🖼 Screenshots
+
+<img width="760" height="786" alt="image" src="https://github.com/user-attachments/assets/5d43f052-cbf1-456e-883b-5a79f15f4d69" />
+
+> Dashboard con métricas y gráfico de dona
+
+<img width="1656" height="894" alt="image" src="https://github.com/user-attachments/assets/a1daca89-8e60-40ee-85dc-71e722204e81" />
+
+> Lista de trámites con filtros avanzados
+
+<img width="1653" height="720" alt="image" src="https://github.com/user-attachments/assets/f6e71018-7d5a-4feb-9621-485a49043a36" />
+
+> Swagger UI — documentación interactiva del API
+
+<img width="1540" height="851" alt="image" src="https://github.com/user-attachments/assets/2b6e249e-1cd5-4f07-ae56-af6a7b663191" />
+
+---
+
 ## ✨ Funcionalidades
 
 ### 🔐 Autenticación con JWT
@@ -56,7 +74,7 @@ Toggle en el sidebar que cambia toda la interfaz a modo oscuro. La preferencia s
 Mensajes animados de éxito, error y advertencia que aparecen en la esquina inferior derecha en cada acción (crear, editar, eliminar, exportar, errores de conexión).
 
 ### 👁 Vista de detalle
-Página individual por trámite con toda la información, fechas de creación/modificación del sistema y un flujo visual que muestra en qué etapa está el trámite.
+Página individual por trámite con toda la información, fechas de creación/modificación y un flujo visual que muestra en qué etapa está el trámite.
 
 ### 📖 Swagger UI — API interactiva
 Documentación automática del API disponible en `/api/docs`. Permite probar todos los endpoints directamente desde el navegador sin necesidad de Postman.
@@ -71,7 +89,7 @@ Documentación automática del API disponible en `/api/docs`. Permite probar tod
 - **Standalone components** — arquitectura modular sin NgModules
 - **JWT Interceptor** — agrega el token automáticamente a todas las peticiones HTTP
 - **Chart.js** — gráfico de dona con actualización reactiva
-- **jsPDF + jspdf-autotable** — generación de PDF en el navegador
+- **jsPDF + jspdf-autotable** — generación de PDF directamente en el navegador
 - **SCSS + CSS Variables** — design system con soporte de dark mode nativo
 
 ### Backend — NestJS 11
@@ -105,8 +123,6 @@ docker compose up --build
 | API | http://localhost:3000/api |
 | Swagger | http://localhost:3000/api/docs |
 
----
-
 ### Opción B — Local
 
 **Prerequisitos:** Node.js 20+, Angular CLI, NestJS CLI
@@ -115,7 +131,6 @@ docker compose up --build
 git clone https://github.com/AlexST360/tramites-digitales.git
 cd tramites-digitales
 
-# Instalar dependencias
 cd backend && npm install
 cd ../frontend && npm install
 ```
@@ -124,20 +139,15 @@ cd ../frontend && npm install
 ```bash
 cd backend
 npm run start:dev
-# API:    http://localhost:3000/api
-# Swagger: http://localhost:3000/api/docs
 ```
 
 **Terminal 2 — Frontend**
 ```bash
 cd frontend
 ng serve
-# App: http://localhost:4200
 ```
 
-**Credenciales de acceso:**
-- Usuario: `admin`
-- Contraseña: `admin123`
+**Credenciales:** usuario `admin` / contraseña `admin123`
 
 ---
 
@@ -155,16 +165,7 @@ Todos los endpoints requieren `Authorization: Bearer <token>` excepto `/api/auth
 | `PATCH` | `/api/tramites/:id` | Actualizar trámite |
 | `DELETE` | `/api/tramites/:id` | Eliminar trámite |
 
-**Query params en `GET /api/tramites`:**
-
-| Param | Tipo | Ejemplo |
-|---|---|---|
-| `estado` | string | `pendiente`, `en_proceso`, `completado`, `rechazado` |
-| `tipo` | string | `Certificado`, `Permiso`, `Licencia`, `Registro` |
-| `fechaDesde` | date | `2026-01-01` |
-| `fechaHasta` | date | `2026-12-31` |
-| `page` | number | `1` |
-| `limit` | number | `10` |
+**Query params en `GET /api/tramites`:** `estado`, `tipo`, `fechaDesde`, `fechaHasta`, `page`, `limit`
 
 ---
 
@@ -176,12 +177,7 @@ tramites-digitales/
 ├── backend/                       # NestJS API REST
 │   ├── src/
 │   │   ├── auth/                  # JWT, Passport, Guards
-│   │   │   ├── strategies/
-│   │   │   ├── guards/
-│   │   │   └── dto/
-│   │   └── tramites/              # CRUD completo
-│   │       ├── dto/               # Validación con class-validator
-│   │       └── entities/          # TypeORM + SQLite
+│   │   └── tramites/              # CRUD + TypeORM + SQLite
 │   └── Dockerfile
 ├── frontend/                      # Angular 21
 │   ├── src/app/
@@ -193,7 +189,7 @@ tramites-digitales/
 │   │   │   ├── tramites-list/     # Filtros + Paginación + PDF
 │   │   │   ├── tramite-form/      # Crear / Editar
 │   │   │   └── tramite-detail/    # Vista de detalle
-│   │   └── services/              # HTTP + Toast
+│   │   └── services/
 │   ├── Dockerfile
 │   └── nginx.conf
 └── docker-compose.yml
