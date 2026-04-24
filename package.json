@@ -1,0 +1,8 @@
+{
+  "name": "tramites-digitales",
+  "scripts": {
+    "start:backend": "cd backend && npm run start:dev",
+    "start:frontend": "cd frontend && ng serve",
+    "install:all": "cd backend && npm i && cd ../frontend && npm i"
+  }
+}

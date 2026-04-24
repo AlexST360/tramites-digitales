@@ -1,0 +1,53 @@
+<div class="dashboard-header">
+  <div>
+    <h1>Dashboard</h1>
+    <p class="subtitle">Resumen general del sistema de trámites</p>
+  </div>
+  <a routerLink="/tramites/nuevo" class="btn btn-primary">+ Nuevo Trámite</a>
+</div>
+
+<div class="cards-grid">
+  @for (card of cards; track card.key) {
+    <div class="metric-card" [style.--accent]="card.color">
+      <div class="card-icon">{{ card.icon }}</div>
+      <div class="card-body">
+        <div class="card-value">{{ getValue(card.key) }}</div>
+        <div class="card-label">{{ card.label }}</div>
+      </div>
+      <div class="card-bar" [style.background]="card.color"></div>
+    </div>
+  }
+</div>
+
+<div class="charts-row">
+  <div class="chart-card">
+    <h2>Distribución por Estado</h2>
+    <div class="chart-container">
+      <canvas #chartCanvas></canvas>
+    </div>
+  </div>
+
+  <div class="summary-card">
+    <h2>Resumen Rápido</h2>
+    <div class="summary-list">
+      @for (card of cards.slice(1); track card.key) {
+        <div class="summary-item">
+          <div class="summary-dot" [style.background]="card.color"></div>
+          <span class="summary-label">{{ card.label }}</span>
+          <span class="summary-value">{{ getValue(card.key) }}</span>
+          <div class="summary-bar-wrap">
+            <div
+              class="summary-bar-fill"
+              [style.width.%]="getValue('total') ? (getValue(card.key) / getValue('total')) * 100 : 0"
+              [style.background]="card.color"
+            ></div>
+          </div>
+          <span class="summary-pct">
+            {{ getValue('total') ? ((getValue(card.key) / getValue('total')) * 100 | number:'1.0-0') : 0 }}%
+          </span>
+        </div>
+      }
+    </div>
+    <a routerLink="/tramites" class="btn btn-outline mt">Ver todos los trámites →</a>
+  </div>
+</div>

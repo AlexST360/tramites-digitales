@@ -1,0 +1,93 @@
+<div class="page-header">
+  <div>
+    <h1>Trámites</h1>
+    <p>{{ total() }} registro(s) en total</p>
+  </div>
+  <div style="display:flex;gap:.6rem">
+    <button class="btn" (click)="exportarPDF()">📄 Exportar PDF</button>
+    <a routerLink="/tramites/nuevo" class="btn btn-primary">➕ Nuevo</a>
+  </div>
+</div>
+
+<div class="filters-panel">
+  <div class="filters-row">
+    <div class="filter-group">
+      <label>Buscar</label>
+      <input type="text" placeholder="Título o solicitante..." [ngModel]="busqueda()" (ngModelChange)="busqueda.set($event)" />
+    </div>
+    <div class="filter-group">
+      <label>Estado</label>
+      <select [ngModel]="filtroEstado()" (ngModelChange)="filtroEstado.set($event)">
+        <option value="">Todos</option>
+        <option value="pendiente">Pendiente</option>
+        <option value="en_proceso">En Proceso</option>
+        <option value="completado">Completado</option>
+        <option value="rechazado">Rechazado</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Tipo</label>
+      <select [ngModel]="filtroTipo()" (ngModelChange)="filtroTipo.set($event)">
+        <option value="">Todos</option>
+        <option>Certificado</option><option>Permiso</option>
+        <option>Licencia</option><option>Registro</option><option>Otro</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Desde</label>
+      <input type="date" [ngModel]="filtroDesde()" (ngModelChange)="filtroDesde.set($event)" />
+    </div>
+    <div class="filter-group">
+      <label>Hasta</label>
+      <input type="date" [ngModel]="filtroHasta()" (ngModelChange)="filtroHasta.set($event)" />
+    </div>
+  </div>
+  <div class="filters-actions">
+    <button class="btn btn-primary btn-sm" (click)="aplicarFiltros()">🔍 Filtrar</button>
+    <button class="btn btn-sm" (click)="limpiarFiltros()">✖ Limpiar</button>
+    <span class="results-count">Mostrando {{ tramitesFiltrados().length }} de {{ total() }}</span>
+  </div>
+</div>
+
+<div class="table-wrapper">
+  <table>
+    <thead>
+      <tr>
+        <th>#</th><th>Título</th><th>Tipo</th><th>Solicitante</th>
+        <th>Fecha</th><th>Estado</th><th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      @for (t of tramitesFiltrados(); track t.id) {
+        <tr>
+          <td style="color:var(--text-2);font-size:.8rem">{{ t.id }}</td>
+          <td><strong>{{ t.titulo }}</strong></td>
+          <td><span style="font-size:.8rem;color:var(--text-2)">{{ t.tipo }}</span></td>
+          <td>{{ t.solicitante }}</td>
+          <td style="color:var(--text-2)">{{ t.fecha }}</td>
+          <td><span [class]="badgeClass(t.estado)">{{ t.estado }}</span></td>
+          <td class="acciones">
+            <a [routerLink]="['/tramites', t.id]" class="btn btn-ghost btn-sm">👁</a>
+            <a [routerLink]="['/tramites/editar', t.id]" class="btn btn-sm">✏️</a>
+            <button class="btn btn-danger btn-sm" (click)="eliminar(t.id!)">🗑</button>
+          </td>
+        </tr>
+      } @empty {
+        <tr><td colspan="7" class="empty-state">No se encontraron trámites.</td></tr>
+      }
+    </tbody>
+  </table>
+
+  @if (totalPages() > 1) {
+    <div class="pagination">
+      <span class="page-info">Página {{ page() }} de {{ totalPages() }}</span>
+      <div class="page-controls">
+        <button class="page-btn" [disabled]="page() === 1" (click)="goToPage(page() - 1)">‹</button>
+        @for (p of pages(); track p) {
+          <button class="page-btn" [class.active]="p === page()" (click)="goToPage(p)">{{ p }}</button>
+        }
+        <button class="page-btn" [disabled]="page() === totalPages()" (click)="goToPage(page() + 1)">›</button>
+      </div>
+    </div>
+  }
+</div>

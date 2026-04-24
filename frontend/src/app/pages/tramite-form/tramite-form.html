@@ -1,0 +1,54 @@
+<div class="page-header">
+  <div>
+    <h1>{{ esEdicion() ? 'Editar Trámite' : 'Nuevo Trámite' }}</h1>
+    <p>{{ esEdicion() ? 'Modifica los datos del trámite' : 'Completa los datos para registrar el trámite' }}</p>
+  </div>
+  <a routerLink="/tramites" class="btn">← Cancelar</a>
+</div>
+
+<form class="form-card" (ngSubmit)="guardar()">
+  <div class="form-grid">
+    <div class="form-group full">
+      <label>Título *</label>
+      <input type="text" placeholder="Ej. Certificado de residencia"
+        [ngModel]="titulo()" (ngModelChange)="titulo.set($event)" name="titulo" />
+    </div>
+
+    <div class="form-group">
+      <label>Tipo *</label>
+      <select [ngModel]="tipo()" (ngModelChange)="tipo.set($event)" name="tipo">
+        <option value="">Seleccione un tipo...</option>
+        <option>Certificado</option><option>Permiso</option>
+        <option>Licencia</option><option>Registro</option><option>Otro</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Estado</label>
+      <select [ngModel]="estado()" (ngModelChange)="estado.set($event)" name="estado">
+        <option value="pendiente">⏳ Pendiente</option>
+        <option value="en_proceso">🔄 En proceso</option>
+        <option value="completado">✅ Completado</option>
+        <option value="rechazado">❌ Rechazado</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Solicitante *</label>
+      <input type="text" placeholder="Nombre completo"
+        [ngModel]="solicitante()" (ngModelChange)="solicitante.set($event)" name="solicitante" />
+    </div>
+
+    <div class="form-group">
+      <label>Fecha *</label>
+      <input type="date" [ngModel]="fecha()" (ngModelChange)="fecha.set($event)" name="fecha" />
+    </div>
+  </div>
+
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary btn-lg" [disabled]="loading()">
+      {{ loading() ? 'Guardando...' : (esEdicion() ? '💾 Guardar cambios' : '➕ Crear trámite') }}
+    </button>
+    <a routerLink="/tramites" class="btn btn-lg">Cancelar</a>
+  </div>
+</form>

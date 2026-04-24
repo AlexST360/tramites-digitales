@@ -1,0 +1,75 @@
+@if (tramite(); as t) {
+  <div class="page-header">
+    <div>
+      <h1>{{ t.titulo }}</h1>
+      <p>Detalle del trámite #{{ t.id }}</p>
+    </div>
+    <div style="display:flex;gap:.6rem">
+      <a routerLink="/tramites" class="btn">← Volver</a>
+      <a [routerLink]="['/tramites/editar', t.id]" class="btn btn-primary">✏️ Editar</a>
+    </div>
+  </div>
+
+  <div class="detail-grid">
+    <div class="card detail-main">
+      <div class="detail-header">
+        <span [class]="badgeClass(t.estado)">{{ t.estado }}</span>
+      </div>
+
+      <div class="detail-fields">
+        <div class="detail-field">
+          <span class="field-label">Título</span>
+          <span class="field-value">{{ t.titulo }}</span>
+        </div>
+        <div class="detail-field">
+          <span class="field-label">Tipo</span>
+          <span class="field-value">{{ t.tipo }}</span>
+        </div>
+        <div class="detail-field">
+          <span class="field-label">Solicitante</span>
+          <span class="field-value">{{ t.solicitante }}</span>
+        </div>
+        <div class="detail-field">
+          <span class="field-label">Fecha de solicitud</span>
+          <span class="field-value">{{ t.fecha }}</span>
+        </div>
+        <div class="detail-field">
+          <span class="field-label">Estado actual</span>
+          <span [class]="badgeClass(t.estado)">{{ t.estado }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card detail-meta">
+      <h3>Información del sistema</h3>
+      <div class="meta-item">
+        <span class="field-label">ID</span>
+        <span class="field-value">#{{ t.id }}</span>
+      </div>
+      @if (t.createdAt) {
+        <div class="meta-item">
+          <span class="field-label">Creado</span>
+          <span class="field-value">{{ t.createdAt | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+      }
+      @if (t.updatedAt) {
+        <div class="meta-item">
+          <span class="field-label">Última modificación</span>
+          <span class="field-value">{{ t.updatedAt | date:'dd/MM/yyyy HH:mm' }}</span>
+        </div>
+      }
+
+      <div class="status-flow">
+        <h4>Flujo de estado</h4>
+        @for (s of ['pendiente','en_proceso','completado']; track s) {
+          <div class="flow-step" [class.done]="isStepDone(t.estado, s)" [class.current]="t.estado === s">
+            <div class="flow-dot"></div>
+            <span>{{ s }}</span>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+} @else {
+  <div class="card" style="text-align:center;padding:3rem;color:var(--text-2)">Cargando...</div>
+}
